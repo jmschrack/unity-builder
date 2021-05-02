@@ -108,8 +108,8 @@ echo "#    Building platform    #"
 echo "###########################"
 echo ""
 
-unity-editor \
-  -nographics \
+${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' unity-editor} \
+  -batchmode \
   -logfile /dev/stdout \
   -quit \
   -customBuildName "$BUILD_NAME" \
