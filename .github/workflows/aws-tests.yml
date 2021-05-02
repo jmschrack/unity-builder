@@ -1,7 +1,7 @@
 name: AWS
 
 on:
-  push: { branches: [aws, remote-builder/refactor-cloudformation] }
+  push: { branches: [aws, remote-builder/refactor-cloudformation, remote-builder/steam-deployment] }
 
 env:
   AWS_REGION: 'eu-west-1'

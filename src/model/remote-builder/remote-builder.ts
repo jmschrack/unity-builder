@@ -38,6 +38,7 @@ class RemoteBuilder {
           # Get source repo for project to be built and game-ci repo for utilties
           git clone https://${buildParameters.githubToken}@github.com/${process.env.GITHUB_REPOSITORY}.git ${buildUid}/${repositoryDirectoryName} -q
           git clone https://${buildParameters.githubToken}@github.com/game-ci/unity-builder.git ${buildUid}/builder -q
+          git clone https://${buildParameters.githubToken}@github.com/game-ci/steam-deploy.git ${buildUid}/steam -q
           cd /${efsDirectoryName}/${buildUid}/${repositoryDirectoryName}/
           git checkout $GITHUB_SHA
           cd /${efsDirectoryName}/
@@ -291,6 +292,26 @@ class RemoteBuilder {
           },
           ...defaultSecretsArray,
         ],
+      );
+
+      core.info('Starting steam deployment');
+      await AWS.run(
+        buildUid,
+        buildParameters.awsStackName,
+        'cm2network/steamcmd:root',
+        [
+          '-c',
+          `
+            ls
+            chmod -R +x /entrypoint.sh;
+            chmod -R +x /steps;
+            /entrypoint.sh;
+          `,
+        ],
+        `/${efsDirectoryName}`,
+        `/${efsDirectoryName}/${buildUid}/steam/action/`,
+        [],
+        [],
       );
     } catch (error) {
       core.setFailed(error);
