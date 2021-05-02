@@ -132,6 +132,8 @@ class AWS {
       ].join('');
       taskDefCloudFormation.replace(insertionStringKeyContainerDef, '');
     }
+    core.info('Cloud Formation template for this build step:');
+    core.info(taskDefCloudFormation);
     const mappedSecrets = secrets.map((x) => {
       return { ParameterKey: x.ParameterKey.replace(/[^\dA-Za-z]/g, ''), ParameterValue: x.ParameterValue };
     });
