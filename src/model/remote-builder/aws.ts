@@ -116,7 +116,7 @@ class AWS {
         parameterTemplate,
         taskDefCloudFormation.slice(index),
       ].join('');
-      const insertionStringKeyContainerDef = 'template - env vars';
+      const insertionStringKeyContainerDef = '# template - env vars';
       const indexContainerDef =
         taskDefCloudFormation.search(insertionStringKeyContainerDef) +
         insertionStringKeyContainerDef.length +
@@ -130,6 +130,7 @@ class AWS {
         parameterContainerDefTemplate,
         taskDefCloudFormation.slice(indexContainerDef),
       ].join('');
+      taskDefCloudFormation.replace(insertionStringKeyContainerDef, '');
     }
     const mappedSecrets = secrets.map((x) => {
       return { ParameterKey: x.ParameterKey.replace(/[^\dA-Za-z]/g, ''), ParameterValue: x.ParameterValue };
